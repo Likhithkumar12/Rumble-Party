@@ -1,6 +1,10 @@
 {
   "dependencies": {
     "com.atteneder.gltfast": "https://github.com/atteneder/glTFast.git",
+    "com.photonengine.fusion-fsm": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-fsm",
+    "com.photonengine.fusion-physics": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-physics",
+    "com.photonengine.fusion-simple-kcc": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-simple-kcc",
+    "com.photonengine.voice-fusion": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/voice-for-fusion",
     "com.unity.ai.navigation": "2.0.12",
     "com.unity.cinemachine": "3.1.7",
     "com.unity.collab-proxy": "2.12.4",

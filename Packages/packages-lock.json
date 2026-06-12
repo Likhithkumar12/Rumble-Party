@@ -13,6 +13,34 @@
       },
       "hash": "66aa58252bafe6f7f48031f4906f807f95a3f396"
     },
+    "com.photonengine.fusion-fsm": {
+      "version": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-fsm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "6ba747ce91680c41f67ad55a4cd8598c7346bf68"
+    },
+    "com.photonengine.fusion-physics": {
+      "version": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-physics",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "1ced86ca789f65fe1540e16ef660874e982329b7"
+    },
+    "com.photonengine.fusion-simple-kcc": {
+      "version": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/fusion-simple-kcc",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a75d61845d539c94b710e878deda28dccf727b07"
+    },
+    "com.photonengine.voice-fusion": {
+      "version": "https://github.com/Photon-Server/Photon-UPM.git#fusion/v2/voice-for-fusion",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "1b93daae7984009cedc51f761a198d145fcf44ad"
+    },
     "com.unity.ai.navigation": {
       "version": "2.0.12",
       "depth": 0,
