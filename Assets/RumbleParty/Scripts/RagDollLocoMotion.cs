@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -20,6 +21,25 @@ namespace ActiveRagdoll
         [SerializeField] private float moveSpeed=4f;
         public float acceleration = 35f;
         public float maxAccelForce = 100f;
+
+        [Header("Ragdoll link")]
+        [SerializeField] private Rigidbody _pelvis;
+        [Tooltip("Pelvis, or the CHEST if the torso sags.")]
+        [SerializeField] private Rigidbody _uprightBody;
+
+        [SerializeField] private float pelvisHoldSpring = 500f;
+        [SerializeField] private float pelvisHoldDamper = 20f;
+
+        [SerializeField] private float uprightSpring = 1200f;
+        [SerializeField] private float uprightDamper = 80f;
+        [Tooltip("Degrees per second.")]
+        [SerializeField] private float turnSpeed = 360f;
+        [Tooltip("Set 180 if the robot walks backwards.")]
+        [SerializeField] private float forwardOffset = 0f;
+
+        private Quaternion _restRotation;
+        private float _initialYaw;
+        private float _currentYaw;
         
         
         
@@ -39,6 +59,11 @@ namespace ActiveRagdoll
             {
                 _locoMotionBody.freezeRotation = true;
             }
+            if(_uprightBody== null)_uprightBody = _pelvis;
+            _restRotation = _uprightBody.rotation;
+            _initialYaw= transform.eulerAngles.y;
+            _currentYaw = _initialYaw;
+
         }
 
         private void Update()
@@ -59,6 +84,8 @@ namespace ActiveRagdoll
         {
             FloatBody();
             Move();
+            HoldPelvis();
+            StayUpRight();
         }
 
         private void FloatBody()
@@ -101,6 +128,51 @@ namespace ActiveRagdoll
             needed = Vector3.ClampMagnitude(needed, maxAccelForce);
  
             _locoMotionBody.AddForce(needed * _locoMotionBody.mass);
+        }
+
+        private void HoldPelvis()
+        {
+            if (_pelvis == null) return;
+            
+            Vector3 delta = _locoMotionBody.position - _pelvis.position;
+            Vector3 force = delta * pelvisHoldSpring - _pelvis.linearVelocity * pelvisHoldDamper;
+            _pelvis.AddForce(force, ForceMode.Acceleration);
+        }
+
+        private void StayUpRight()
+        {
+            if (_uprightBody == null) return;
+            Vector3 vel = _locoMotionBody.linearVelocity;
+            vel.y = 0f;
+            if (vel.magnitude > 0.01f)
+            {
+                float desiredYaw = Mathf.Atan2(vel.x, vel.z) * Mathf.Rad2Deg + forwardOffset;
+                _currentYaw = Mathf.MoveTowardsAngle(_currentYaw, desiredYaw, turnSpeed * Time.fixedDeltaTime);
+            }
+            float yawDelta =
+                Mathf.DeltaAngle(_initialYaw, _currentYaw);
+            
+            Quaternion target =
+                Quaternion.AngleAxis(yawDelta, Vector3.up) * _restRotation;
+            
+            Quaternion current = _uprightBody.rotation;
+
+            if (Quaternion.Dot(target, current) < 0f)
+            {
+                current = new Quaternion(-current.x, -current.y, -current.z, -current.w);
+            }
+            Quaternion toGoal = target* Quaternion.Inverse(current);
+            toGoal.ToAngleAxis(out float angle, out Vector3 axis);
+            
+            if (angle > 180f) angle -= 360f;
+            axis.Normalize();
+            
+            Vector3 torque =
+                axis * (angle * Mathf.Deg2Rad * uprightSpring)
+                - _uprightBody.angularVelocity * uprightDamper;
+            
+            _uprightBody.AddTorque(torque);
+
         }
     }
 }
