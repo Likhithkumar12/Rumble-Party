@@ -1,7 +1,8 @@
 using System;
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 namespace ActiveRagdoll
 {
@@ -22,6 +23,10 @@ namespace ActiveRagdoll
         public float acceleration = 35f;
         public float maxAccelForce = 100f;
 
+
+        [SerializeField] private Animator _ghostAnimator;
+        
+        
         [Header("Ragdoll link")]
         [SerializeField] private Rigidbody _pelvis;
         [Tooltip("Pelvis, or the CHEST if the torso sags.")]
@@ -36,6 +41,8 @@ namespace ActiveRagdoll
         [SerializeField] private float turnSpeed = 360f;
         [Tooltip("Set 180 if the robot walks backwards.")]
         [SerializeField] private float forwardOffset = 0f;
+        
+        private PlayerInputt _playerInput;
 
         private Quaternion _restRotation;
         private float _initialYaw;
@@ -46,6 +53,7 @@ namespace ActiveRagdoll
         
         private bool _isGrounded;
         private float relVel;
+        private Vector2 input;
         private Rigidbody _hitBody;
         private float v, h;
         private Vector3 fwd, right;
@@ -55,6 +63,7 @@ namespace ActiveRagdoll
         
         void Awake()
         {
+            _playerInput = new PlayerInputt();
             if (_locoMotionBody != null)
             {
                 _locoMotionBody.freezeRotation = true;
@@ -66,10 +75,21 @@ namespace ActiveRagdoll
 
         }
 
+        private void OnEnable()
+        {
+            _playerInput.Player.Enable();
+        }
+
+        private void OnDisable()
+        {
+            _playerInput.Player.Disable();
+        }
+
         private void Update()
         {
-            h = Input.GetAxis("Horizontal");
-            v = Input.GetAxis("Vertical");
+            input = _playerInput.Player.Move.ReadValue<Vector2>();
+             h = input.x;
+             v = input.y;
             fwd = _cameraTransform ? Vector3.ProjectOnPlane(_cameraTransform.forward, Vector3.up).normalized
                 : Vector3.forward;
             
@@ -86,11 +106,17 @@ namespace ActiveRagdoll
             Move();
             HoldPelvis();
             StayUpRight();
+            if (_ghostAnimator)
+            {
+                Vector3 planar = _locoMotionBody.linearVelocity;
+                planar.y = 0f;
+                _ghostAnimator.SetFloat("Speed", planar.magnitude, 0.1f, Time.fixedDeltaTime);
+            }
         }
 
         private void FloatBody()
         {
-            if(_locoMotionBody==null)
+            if(_locoMotionBody ==null)
             {
                 return;
             }

@@ -631,55 +631,55 @@ MonoBehaviour:
     animated: {fileID: 173430411152008986}
     joint: {fileID: 7384566171349568885}
     group: 1
-    strengthMultiplier: 0
+    strengthMultiplier: 0.2
   - name: LeftUpperArm
     animated: {fileID: 685188924074540197}
     joint: {fileID: 5615284202801961257}
     group: 2
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: LeftForeArm
     animated: {fileID: 246265059756526429}
     joint: {fileID: 7480864517969352591}
     group: 2
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: RightUpperArm
     animated: {fileID: 7341929305419989233}
     joint: {fileID: 8337821683824737459}
     group: 2
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: RightForeArm
     animated: {fileID: 5666870569508289619}
     joint: {fileID: 5666870568996165779}
     group: 2
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: LeftThigh
     animated: {fileID: 7510402905683279407}
     joint: {fileID: 7510402905256090359}
     group: 3
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: LeftShin
     animated: {fileID: 3587271309155842155}
     joint: {fileID: 3587271309599890619}
     group: 3
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: RightThigh
     animated: {fileID: 2413106119474176415}
     joint: {fileID: 5823618416915240695}
     group: 3
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: RightShin
     animated: {fileID: 1222784621689498646}
     joint: {fileID: 2741546541552977693}
     group: 3
-    strengthMultiplier: 0
+    strengthMultiplier: 1
   - name: Body
     animated: {fileID: 2702309976205230702}
     joint: {fileID: 3381585317572000428}
     group: 0
-    strengthMultiplier: 0
-  muscleStrength: 1
-  spring: 800
-  damper: 60
+    strengthMultiplier: 1
+  muscleStrength: 0.8
+  spring: 1000
+  damper: 200
   maxForce: Infinity
   coreMultiplier: 1.5
   headMultiplier: 0.6
@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cde9f64b6f9e41be94ca8920d4e57b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ActiveRagdoll.RagDollLocoMotion
-  _cameraTransform: {fileID: 0}
+  _cameraTransform: {fileID: 1475537296}
   _locoMotionBody: {fileID: 2009272105}
   _rayLength: 0.8
   rideHeight: 0.8
@@ -711,11 +711,12 @@ MonoBehaviour:
   moveSpeed: 4
   acceleration: 35
   maxAccelForce: 100
+  _ghostAnimator: {fileID: 919132148261348928}
   _pelvis: {fileID: 6837366078654378400}
   _uprightBody: {fileID: 3381585317572000425}
   pelvisHoldSpring: 500
   pelvisHoldDamper: 20
-  uprightSpring: 1200
+  uprightSpring: 1500
   uprightDamper: 80
   turnSpeed: 360
   forwardOffset: 0
@@ -732,7 +733,7 @@ GameObject:
   - component: {fileID: 1475537294}
   - component: {fileID: 1475537293}
   - component: {fileID: 1475537292}
-  - component: {fileID: 1475537291}
+  - component: {fileID: 1475537297}
   m_Layer: 0
   m_Name: FreeLook Camera
   m_TagString: Untagged
@@ -740,64 +741,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1475537291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1475537290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineInputAxisController
-  ScanRecursively: 1
-  SuppressInputWhileBlending: 1
-  IgnoreTimeScale: 0
-  m_ControllerManager:
-    Controllers:
-    - Name: Look Orbit X
-      Owner: {fileID: 1475537294}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 0}
-        Gain: 1
-        LegacyInput: 
-        LegacyGain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
-    - Name: Look Orbit Y
-      Owner: {fileID: 1475537294}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 0}
-        Gain: 1
-        LegacyInput: 
-        LegacyGain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
-    - Name: Orbit Scale
-      Owner: {fileID: 1475537294}
-      Enabled: 1
-      Input:
-        InputAction: {fileID: 0}
-        Gain: 1
-        LegacyInput: 
-        LegacyGain: 1
-        CancelDeltaTime: 0
-      InputValue: 0
-      Driver:
-        AccelTime: 0
-        DecelTime: 0
-  PlayerIndex: -1
-  AutoEnableInputs: 1
 --- !u!114 &1475537292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -965,6 +908,58 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1475537297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475537290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89875cdc57c54474a8a74efd9b2a3b5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineInputAxisController
+  ScanRecursively: 1
+  SuppressInputWhileBlending: 1
+  IgnoreTimeScale: 0
+  m_ControllerManager:
+    Controllers:
+    - Name: Look Orbit X
+      Owner: {fileID: 1475537294}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
+        Gain: 1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0.2
+        DecelTime: 0.2
+    - Name: Look Orbit Y
+      Owner: {fileID: 1475537294}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: -5630151704836100654, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
+        Gain: -1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0.2
+        DecelTime: 0.2
+    - Name: Orbit Scale
+      Owner: {fileID: 1475537294}
+      Enabled: 1
+      Input:
+        InputAction: {fileID: 5082991133974614888, guid: 1d6e640e716dc4ff6989b73d02023f2b, type: 3}
+        Gain: -1
+        CancelDeltaTime: 0
+      InputValue: 0
+      Driver:
+        AccelTime: 0
+        DecelTime: 0
+  PlayerIndex: -1
+  AutoEnableInputs: 1
 --- !u!1 &1760327249
 GameObject:
   m_ObjectHideFlags: 0

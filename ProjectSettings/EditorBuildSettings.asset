@@ -9,4 +9,4 @@ EditorBuildSettings:
     path: Assets/RumbleParty/Scenes/Game.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 8eb37213f25b64748ac7d17c35483d80, type: 3}
