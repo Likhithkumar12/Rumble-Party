@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-namespace ActiveRagdoll
+namespace RumbleParty.Character
 {
     public class RagDollLocoMotion:MonoBehaviour
     {

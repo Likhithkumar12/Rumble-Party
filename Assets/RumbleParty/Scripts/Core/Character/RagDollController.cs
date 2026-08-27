@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ActiveRagdoll
+namespace RumbleParty.Character
 {
     public enum BoneGroup { Core, Head, Arm, Leg, Extremity }
 
