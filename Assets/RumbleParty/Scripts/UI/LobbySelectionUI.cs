@@ -1,3 +1,4 @@
+using System;
 using GameNetworking.Networking;
 using TMPro;
 using UnityEngine;
@@ -16,7 +17,11 @@ namespace GameNetworking.UI
         {
             _createRoomButton.onClick.AddListener(onCreateRoomClicked);
             _joinRoomButton.onClick.AddListener(onJoinRoomClicked);
-            
+        }
+
+        private void OnEnable()
+        {
+            ResetState();
         }
 
         private async void onCreateRoomClicked()
@@ -60,6 +65,13 @@ namespace GameNetworking.UI
         {
             _createRoomButton.interactable = value;
             _joinRoomButton.interactable = value;
+        }
+
+        private void ResetState()
+        {
+            _statusText.text = "";
+            _roomCodeField.text = "";
+            SetButtonsInteractable(true);
         }
         
     }

@@ -78,6 +78,19 @@ namespace GameNetworking.Networking
             int buildIndex = SceneUtility.GetBuildIndexByScenePath(GetScenePathByName(_gameplaySceneName));
             Runner.LoadScene(SceneRef.FromIndex(buildIndex), LoadSceneMode.Single);
         }
+        public void ShutdownRoom()
+        {
+            if (Runner.IsServer)
+            {
+                Runner.Shutdown();
+                CurrentRoomCode = null;
+            }
+        }
+
+        public void LeaveRoom(PlayerRef player)
+        {
+            Runner.Disconnect(player);
+        }
 
         private async Task<bool> StartGameInternal(GameMode mode, string sessionName)
         {

@@ -12,6 +12,8 @@ namespace GameNetworking.Player
 
         public event Action OnRosterChanged;
 
+        public static event Action<PlayerRegistry> onReady;
+
         private readonly List<PlayerEntry> _entries = new List<PlayerEntry>();
         public IReadOnlyList<PlayerEntry> Entries => _entries;
 
@@ -19,7 +21,11 @@ namespace GameNetworking.Player
         public int ReadyCount => _entries.Count(e => e.IsReady);
         public int PlayerCount => _entries.Count;
 
-        public override void Spawned() => Instance = this;
+        public override void Spawned()
+        {
+            Instance = this;
+            onReady?.Invoke(this);
+        }
 
         public void Register(PlayerEntry entry)
         {
@@ -32,11 +38,7 @@ namespace GameNetworking.Player
         {
             if (_entries.Remove(entry)) NotifyChanged();
         }
-
-        public override void Despawned(NetworkRunner runner, bool hasState)
-        {
-            Debug.Log("despawned player registery");
-        }
+        
 
         public void NotifyChanged() => OnRosterChanged?.Invoke();
 

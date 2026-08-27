@@ -15,6 +15,7 @@ namespace GameNetworking.UI
         [SerializeField] private Button _readyButton;
         [SerializeField] private TMP_Text _readyButtonLabel;
         [SerializeField] private Button _startButton;
+        [SerializeField] private Button _backButton;
 
         private bool _localReady;
 
@@ -23,19 +24,45 @@ namespace GameNetworking.UI
             _roomCodeText.text = ConnectionManager.Instance.CurrentRoomCode;
             _readyButton.onClick.AddListener(OnReadyClicked);
             _startButton.onClick.AddListener(OnStartClicked);
-
             _startButton.gameObject.SetActive(ConnectionManager.Instance.IsHost);
+            _backButton.onClick.AddListener(OnBackClicked);
 
             if (PlayerRegistry.Instance != null)
                 PlayerRegistry.Instance.OnRosterChanged += Refresh;
+            if (PlayerRegistry.Instance != null)
+            {
+              
+                BindToRegistry(PlayerRegistry.Instance);
+            }
+            else
+            {
+               
+                PlayerRegistry.onReady += BindToRegistry;
+            }
 
-            Refresh();
         }
 
         void OnDisable()
         {
             if (PlayerRegistry.Instance != null)
                 PlayerRegistry.Instance.OnRosterChanged -= Refresh;
+            if (PlayerRegistry.Instance != null)
+                PlayerRegistry.Instance.OnRosterChanged -= Refresh;
+            PlayerRegistry.onReady -= BindToRegistry;
+            _backButton.onClick.RemoveListener(OnBackClicked);
+        }
+        private void OnBackClicked()
+        {
+            if (ConnectionManager.Instance.IsHost)
+            {
+                ConnectionManager.Instance.ShutdownRoom();
+            }
+            else
+            {
+                ConnectionManager.Instance.LeaveRoom(ConnectionManager.Instance.Runner.LocalPlayer);
+            }
+
+            ScreenNavigator.Instance.Show(ScreenId.Home);
         }
 
         private void OnReadyClicked()
@@ -50,9 +77,18 @@ namespace GameNetworking.UI
             if (!ConnectionManager.Instance.IsHost || !PlayerRegistry.Instance.AllReady) return;
             ConnectionManager.Instance.StartGameplay();
         }
+        private void BindToRegistry(PlayerRegistry registry)
+        {
+            registry.OnRosterChanged += Refresh;
+            Refresh();
+        }
 
         private void Refresh()
         {
+            foreach(Transform child in _playerListContainer)
+            {
+                Destroy(child.gameObject);
+            }
             var registry = PlayerRegistry.Instance;
             if (registry == null)
             {
